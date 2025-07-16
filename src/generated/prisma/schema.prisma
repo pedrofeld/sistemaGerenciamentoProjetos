@@ -15,55 +15,55 @@ datasource db {
 }
 
 model Projeto {
-  id          String     @db.Uuid @id @default(uuid())
-  titulo        String   @unique
-  descricao   String?
-  dataInicio  DateTime
+  id             String    @id @default(uuid()) @db.Uuid
+  titulo         String    @unique
+  descricao      String?
+  dataInicio     DateTime
   prazoConclusao DateTime?
-  status      String   @default("ativo")
+  status         String    @default("ativo")
 
-  tarefas Tarefa[]
+  tarefas  Tarefa[]
   usuarios UsuarioProjeto[]
 
-  dataCriacao DateTime @default(now()) @map("data_criacao")
+  dataCriacao     DateTime @default(now()) @map("data_criacao")
   dataAtualizacao DateTime @default(now()) @updatedAt @map("data_atualizacao")
 
   @@map("projetos")
 }
 
 model Tarefa {
-  id          String     @db.Uuid @id @default(uuid())
-  descricao   String
-  horas Int
-  urgente Boolean @default(false)
-  status      String   @default("pendente")
+  id        String  @id @default(uuid()) @db.Uuid
+  descricao String
+  horas     Int
+  urgente   Boolean @default(false)
+  status    String  @default("pendente")
 
-  projetoId String @db.Uuid @map("projeto_id")
-  projeto Projeto @relation(fields: [projetoId], references: [id])
+  projetoId String  @map("projeto_id") @db.Uuid
+  projeto   Projeto @relation(fields: [projetoId], references: [id])
 
-  dataCriacao DateTime @default(now()) @map("data_criacao")
+  dataCriacao     DateTime @default(now()) @map("data_criacao")
   dataAtualizacao DateTime @default(now()) @updatedAt @map("data_atualizacao")
 
   @@map("tarefas")
 }
 
 model Usuario {
-  id          String @db.Uuid @id @default(uuid())
-  nome        String
-  email       String   @unique
-  senha       String
-  
+  id    String @id @default(uuid()) @db.Uuid
+  nome  String
+  email String @unique
+  senha String
+
   projetos UsuarioProjeto[]
 
-  dataCriacao DateTime @default(now()) @map("data_criacao")
+  dataCriacao     DateTime @default(now()) @map("data_criacao")
   dataAtualizacao DateTime @default(now()) @updatedAt @map("data_atualizacao")
 
   @@map("usuarios")
 }
 
 model UsuarioProjeto {
-  usuarioId String @db.Uuid @map("usuario_id")
-  projetoId String @db.Uuid @map("projeto_id")
+  usuarioId String @map("usuario_id") @db.Uuid
+  projetoId String @map("projeto_id") @db.Uuid
 
   usuario Usuario @relation(fields: [usuarioId], references: [id])
   projeto Projeto @relation(fields: [projetoId], references: [id])
